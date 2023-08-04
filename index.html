@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0;
+                background-color: black;
+                background-size: cover;
+            }
+
+            .one {
+                color: blue;
+                transition: all 1s ease;
+            }
+            .twoo {
+                left: 10px;
+                top: 35px;
+                width: 50px;
+                height: 50px;
+                background-image: url(coin.png);
+                background-size: cover;
+                border-radius: 50%;
+                display: block;
+                position: absolute;
+                z-index: 10;
+            }
+            .circle_counter {
+                width: 15rem;
+                height: 15rem;
+            }
+
+            .two {
+                left: 0;
+                top: 0;
+                transition: all 1s ease;
+            }
+
+            .circle {
+                display: none;
+                width: 50px;
+                height: 50px;
+                background-image: url(coin.png);
+                background-size: cover;
+                border-radius: 50%;
+                position: absolute;
+                top: 47%;
+            }
+
+            #center-button {
+                position: absolute;
+                top: 60%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 10px 20px;
+                background-color: white;
+                padding: 10px 20px;
+                border-radius: 30px;
+                font-size: 16px;
+                cursor: pointer;
+                border: none;
+            }
+
+            #counter {
+                background-color: antiquewhite;
+                width: 200px;
+                height: 120px;
+                padding-left: 10px;
+                gap: 1rem;
+                border-top-right-radius: 30px;
+                border-bottom-right-radius: 30px;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <button id="center-button">Reward</button>
+        <div class="circle_container">
+            <div
+                id="circle"
+                class="circle one"
+                style="top: 44%; left: 48%"
+            ></div>
+            <div
+                id="circle"
+                class="circle one"
+                style="top: 47%; left: 50%"
+            ></div>
+            <div
+                id="circle"
+                class="circle one"
+                style="top: 49%; left: 45%"
+            ></div>
+            <div
+                id="circle"
+                class="circle one"
+                style="top: 47%; left: 42%"
+            ></div>
+            <div
+                id="circle"
+                class="circle one"
+                style="top: 46%; left: 46%"
+            ></div>
+        </div>
+        <div class="twoo"></div>
+        <div id="counter">Counter: 0</div>
+        <script>
+            const circles = document.querySelectorAll(".circle");
+            const button = document.getElementById("center-button");
+            const counter = document.getElementById("counter");
+            const twooElement = document.querySelector(".twoo");
+            let count = 0;
+
+            button.addEventListener("click", () => {
+                let delay = 0;
+
+                circles.forEach((circle, index) => {
+                    setTimeout(() => {
+                        circle.style.display = "block";
+                        circle.classList.add("one");
+                    }, delay);
+
+                    delay += 500; // Increment the delay for each circle
+                });
+
+                setTimeout(() => {
+                    // Move all circles together to the "two" class
+                    circles.forEach((circle) => {
+                        circle.classList.remove("one");
+                        circle.classList.add("two");
+                        circle.style.left = "0";
+                        circle.style.top = "0";
+                    });
+
+                    // Update count and counter
+                    count = 100;
+                    updateCounter();
+                }, circles.length * 500); // Move all circles together after they have all appeared
+            });
+
+            function updateCounter() {
+                counter.textContent = "Counter: " + count;
+            }
+        </script>
+    </body>
+</html>
