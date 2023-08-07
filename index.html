@@ -108,37 +108,56 @@
         <div class="twoo"></div>
         <div id="counter">Counter: 0</div>
         <script>
-            const circles = document.querySelectorAll(".circle");
             const button = document.getElementById("center-button");
             const counter = document.getElementById("counter");
-            const twooElement = document.querySelector(".twoo");
+            const circles = document.querySelectorAll(".circle");
             let count = 0;
+            let animationInProgress = false;
 
             button.addEventListener("click", () => {
-                let delay = 0;
+                if (!animationInProgress) {
+                    animationInProgress = true;
 
-                circles.forEach((circle, index) => {
-                    setTimeout(() => {
-                        circle.style.display = "block";
-                        circle.classList.add("one");
-                    }, delay);
-
-                    delay += 500; // Increment the delay for each circle
-                });
-
-                setTimeout(() => {
-                    // Move all circles together to the "two" class
+                    const initialPositions = [];
                     circles.forEach((circle) => {
-                        circle.classList.remove("one");
-                        circle.classList.add("two");
-                        circle.style.left = "0";
-                        circle.style.top = "0";
+                        initialPositions.push({
+                            left: circle.style.left,
+                            top: circle.style.top,
+                        });
                     });
 
-                    // Update count and counter
-                    count = 100;
-                    updateCounter();
-                }, circles.length * 500); // Move all circles together after they have all appeared
+                    circles.forEach((circle, index) => {
+                        setTimeout(() => {
+                            circle.style.display = "block";
+                            circle.classList.add("one");
+                        }, index * 250); // Adjust the delay to create twinkling effect
+                    });
+
+                    setTimeout(() => {
+                        circles.forEach((circle) => {
+                            circle.classList.remove("one");
+                            circle.classList.add("two");
+                            circle.style.left = "0";
+                            circle.style.top = "0";
+                        });
+
+                        count += 100;
+                        updateCounter();
+
+                        circles.forEach((circle, index) => {
+                            setTimeout(() => {
+                                circle.style.display = "none";
+                                circle.style.left =
+                                    initialPositions[index].left;
+                                circle.style.top = initialPositions[index].top;
+                            }, index * 250); // Adjust the delay to create twinkling effect
+                        });
+
+                        setTimeout(() => {
+                            animationInProgress = false;
+                        }, circles.length * 250);
+                    }, circles.length * 250);
+                }
             });
 
             function updateCounter() {
